@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  #Service 1: Definition of MySql Database
+  stocks-mysqldb:
+    container_name: stock-mysqldb
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: stocks
+    networks:
+      springboot-mysql-stocks-network:
+
+  #Service 2: Definition of Spring Boot Application
+  stock-springboot-stock-service:
+    container_name: stock-springboot-stock-service
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      springboot-mysql-stocks-network:
+    restart: on-failure
+
+#Service 2: Definition of Network Connection for Spring Boot MySQL Database Application
+networks:
+  springboot-mysql-stocks-network:
